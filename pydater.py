@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import os
+import os, sys
 from hashlib import md5
 import re
 import stat
@@ -116,7 +116,9 @@ class PyDater(QtGui.QWidget, object):
         file = os.path.join(str(self.local_dir_prefix), self.run[1:] if self.run[0] == '/' else self.run)
         os.chmod(file, stat.S_IRWXU | stat.S_IRWXG)
         try:
-            subprocess.check_call(file)
+            ret = subprocess.check_call(file)
+            QtGui.QApplication.exit(ret)
+            sys.exit(ret)
         except subprocess.CalledProcessError, e:
             print e.message
         self.close()
